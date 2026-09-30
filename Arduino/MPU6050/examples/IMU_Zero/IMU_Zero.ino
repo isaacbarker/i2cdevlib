@@ -1,11 +1,12 @@
 // MPU6050 offset-finder, based on Jeff Rowberg's MPU6050_RAW
-// 2016-10-19 by Robert R. Fenichel (bob@fenichel.net)
+// 2016-10-19 by Robert R. Fenichel (bob@fenichel.net), edited by Isaac Barker (isaac@isaacbarker.net)
 
 // I2C device class (I2Cdev) demonstration Arduino sketch for MPU6050 class
 // 10/7/2011 by Jeff Rowberg <jeff@rowberg.net>
 // Updates should (hopefully) always be available at https://github.com/jrowberg/i2cdevlib
 //
 // Changelog:
+//      2026-09-30 - changed baud rate to be consistent with MPU6050_raw.ino
 //      2019-07-11 - added PID offset generation at begninning Generates first offsets 
 //                 - in @ 6 seconds and completes with 4 more sets @ 10 seconds
 //                 - then continues with origional 2016 calibration code.
@@ -159,7 +160,7 @@ void Initialize()
         Fastwire::setup(400, true);
     #endif
 
-    Serial.begin(9600);
+    Serial.begin(38400);
 
     // initialize device
     Serial.println("Initializing I2C devices...");

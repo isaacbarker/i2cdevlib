@@ -1,8 +1,10 @@
 // I2C device class (I2Cdev) demonstration Arduino sketch for MPU6050 class
-// 10/7/2011 by Jeff Rowberg <jeff@rowberg.net>
+// 10/7/2011 by Jeff Rowberg <jeff@rowberg.net>, edited 30/9/2026 by Isaac Barker <isaac@isaacbarker.net>
 // Updates should (hopefully) always be available at https://github.com/jrowberg/i2cdevlib
 //
 // Changelog:
+//      2026-09-30 - uncommented gyroscope and accelerometer calibration
+//                 - introduced calibration offset variables in configuration
 //      2013-05-08 - added multiple output formats
 //                 - added seamless Fastwire support
 //      2011-10-07 - initial release
@@ -53,7 +55,17 @@ MPU6050 accelgyro;
 int16_t ax, ay, az;
 int16_t gx, gy, gz;
 
+// Offset values (calculate using ../IMU_Zero/IMU_Zero.ino)
 
+// Accelerometer
+int axOffset = 0;
+int ayOffset = 0;
+int azOffset = 0;
+
+// Gyroscope
+int gxOffset = 0;
+int gyOffset = 0;
+int gzOffset = 0;
 
 // uncomment "OUTPUT_READABLE_ACCELGYRO" if you want to see a tab-separated
 // list of the accel X/Y/Z and then gyro X/Y/Z values in decimal. Easy to read,
@@ -92,27 +104,27 @@ void setup() {
     Serial.println(accelgyro.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
 
     // use the code below to change accel/gyro offset values
-    /*
     Serial.println("Updating internal sensor offsets...");
-    // -76	-2359	1688	0	0	0
-    Serial.print(accelgyro.getXAccelOffset()); Serial.print("\t"); // -76
-    Serial.print(accelgyro.getYAccelOffset()); Serial.print("\t"); // -2359
-    Serial.print(accelgyro.getZAccelOffset()); Serial.print("\t"); // 1688
-    Serial.print(accelgyro.getXGyroOffset()); Serial.print("\t"); // 0
-    Serial.print(accelgyro.getYGyroOffset()); Serial.print("\t"); // 0
-    Serial.print(accelgyro.getZGyroOffset()); Serial.print("\t"); // 0
+
+    // accel offsets
+    accelgyro.setXAccelOffset(axOffset);
+    accelgyro.setYAccelOffset(ayOffset);
+    accelgyro.setZAccelOffset(azOffset);
+
+    // gyro offsets
+    accelgyro.setXGyroOffset(gxOffset);
+    accelgyro.setYGyroOffset(gyOffset);
+    accelgyro.setZGyroOffset(gzOffset);
+
+    Serial.print("\n")
+
+    Serial.print(accelgyro.getXAccelOffset()); Serial.print("\t");
+    Serial.print(accelgyro.getYAccelOffset()); Serial.print("\t"); 
+    Serial.print(accelgyro.getZAccelOffset()); Serial.print("\t"); 
+    Serial.print(accelgyro.getXGyroOffset()); Serial.print("\t");
+    Serial.print(accelgyro.getYGyroOffset()); Serial.print("\t"); 
+    Serial.print(accelgyro.getZGyroOffset()); Serial.print("\t"); 
     Serial.print("\n");
-    accelgyro.setXGyroOffset(220);
-    accelgyro.setYGyroOffset(76);
-    accelgyro.setZGyroOffset(-85);
-    Serial.print(accelgyro.getXAccelOffset()); Serial.print("\t"); // -76
-    Serial.print(accelgyro.getYAccelOffset()); Serial.print("\t"); // -2359
-    Serial.print(accelgyro.getZAccelOffset()); Serial.print("\t"); // 1688
-    Serial.print(accelgyro.getXGyroOffset()); Serial.print("\t"); // 0
-    Serial.print(accelgyro.getYGyroOffset()); Serial.print("\t"); // 0
-    Serial.print(accelgyro.getZGyroOffset()); Serial.print("\t"); // 0
-    Serial.print("\n");
-    */
 
     // configure Arduino LED pin for output
     pinMode(LED_PIN, OUTPUT);
